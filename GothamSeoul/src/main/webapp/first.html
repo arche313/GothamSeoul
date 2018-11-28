@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>GOTHAM.SEOUL - first</title>
+<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=t76XFOO4KOQe79v0K_L0&submodules=geocoder"></script>
+</head>
+<body>
+	<script>
+		function getLocation() {
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(showPosition,
+						showError);
+			} else {
+				alert(" 이 브라우저는 geolocation을 지원하지 않습니다.");
+			}
+		}
+		function showPosition(position) {
+			lat = position.coords.latitude;
+			lng = position.coords.longitude;
+			setTimeout( function(){
+				location.href = "/GothamSeoul/main.do?lat=" + lat
+					+ "&lng=" + lng+"&guName="+guName;	
+			}, 200);
+		}
+		function showError(error) {
+			alert("error");
+		}
+		getLocation();
+		
+		setTimeout( function(){
+			   naver.maps.Service.reverseGeocode({
+			       location: new naver.maps.LatLng(lat, lng),
+			   }, function(status, response) {
+			       if (status !== naver.maps.Service.Status.OK) {
+			           return alert('Something wrong!');
+			       }
+			       
+			       var result = response.result, // 검색 결과의 컨테이너
+			       items = result.items; // 검색 결과의 배열
+			       guName = items[2].address.split(' ')[1];
+// 			       console.log(guName);
+// 			       alert(guName);
+			   }); 
+			}, 20);
+		
+
+		
+	</script>
+</body>
+</html>
